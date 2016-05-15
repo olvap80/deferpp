@@ -14,7 +14,7 @@
 #define DEFER_CAT_ID_EXPANDED_HELPER(a,b) a##b
 
 namespace Defer_SupportNamespace{
-    class TagClassForLambda{};
+    struct TagClassForLambda{ constexpr TagClassForLambda(){} };
     constexpr TagClassForLambda tagClassForLambda;
 
     template<class Lambda>
@@ -51,10 +51,12 @@ namespace Defer_SupportNamespace{
 
 
     template<class Lambda>
-    CallOnScopeExit<Lambda> operator ->* (const TagClassForLambda&, Lambda&& lambda){
+    inline CallOnScopeExit<Lambda> operator ->* (const TagClassForLambda&, Lambda&& lambda){
         return CallOnScopeExit<Lambda>(std::move(lambda));
     }
 }
+
+//some basic testing: todo remove this
 
 #include <iostream>
 
