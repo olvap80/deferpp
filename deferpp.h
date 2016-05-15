@@ -44,7 +44,7 @@ namespace Defer_SupportNamespace{
         bool isOwner; //ensure 100% lambda is called only one time
         Lambda lambda; //hold lambda, avoid slow std::function
 
-		//ban copying
+        //ban copying
         CallOnScopeExit(const CallOnScopeExit& other);
         CallOnScopeExit& operator=(const CallOnScopeExit& other);
     };
@@ -61,19 +61,18 @@ namespace Defer_SupportNamespace{
 #include <iostream>
 
 int main() {
-	int i = 0;
-	std::cout << "Enter app, i = " << i << std::endl;
-	{
-		std::cout << "After enter scope, i = " << i << std::endl;
-	
-	    DEFER {
-	        ++i;
-	        std::cout << "Lambda called, i = " << i << std::endl;
-	    };
-	    
-	    std::cout << "Before exit scope, i = " << i << std::endl;
-	}
-	std::cout << "Exit app, i = " << i << std::endl;
-	return 0;
+    int i = 0;
+    std::cout << "Enter app, i = " << i << std::endl;
+    {
+        std::cout << "After enter scope, i = " << i << std::endl;
+    
+        DEFER {
+            ++i;
+            std::cout << "Lambda called, i = " << i << std::endl;
+        };
+        
+        std::cout << "Before exit scope, i = " << i << std::endl;
+    }
+    std::cout << "Exit app, i = " << i << std::endl;
+    return 0;
 }
-
