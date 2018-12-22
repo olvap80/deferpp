@@ -1,8 +1,9 @@
 /** @file deferpp.h
     @brief Deferpp (Defer++) is Go-like DEFER construction for C++11
     
-    No installation/build needed. Copy in any location you like :)
-    Created by Pavlo M
+    Single header. No installation/build needed.
+    Copy this whole file in any location you like :)
+    Created by Pavlo M, https://github.com/olvap80
     
     Usage:
 @code
@@ -60,6 +61,9 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
           = (Defer_SupportNamespace::tagClassForLambda) ->* [&]()
 
 
+//==============================================================================
+//Implementation details follow
+          
 
 //Helper macro to expand and concatenate macro arguments into combined identifier
 #define DEFER_CAT_ID(a,b) DEFER_CAT_ID_EXPANDED_HELPER(a,b)
@@ -112,8 +116,9 @@ namespace Defer_SupportNamespace{
 }
 
 
+//==============================================================================
+//Demo 
 
-//some basic testing (demo)
 #if 0
 
     #include <iostream>
