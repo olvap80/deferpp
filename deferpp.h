@@ -1,8 +1,8 @@
 /** @file deferpp.h
     @brief Deferpp (Defer++) is Go-like DEFER construction for C++11
     
-    Single header. No installation/build needed.
-    Copy this whole file in any location you like :)
+    Single header. No installation required, no build needed.
+    Copy this whole file to any location you like :)
     Created by Pavlo M, https://github.com/olvap80
     
     Usage:
@@ -18,7 +18,11 @@
     //       some exception, and there is guarantee deferred code is called)
 @endcode
     
-    See also sample test fragment at the bottom of this file.
+    This is quick alternative for RAII: to ensure cleanup code is called
+    when scope is exited, so that one does not need to write RAII wrapper
+    class for every kind of resource.
+    See also sample test fragment (demo) at the bottom of this file.
+
 
 Copyright (c) 2015-2018, Pavlo M, https://github.com/olvap80
 All rights reserved.
@@ -55,7 +59,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 ///Defer following code until enclosing scope is exited
 /** Usage: DEFER{ some_code_to_be_deferred }; 
     Remember that some_code_to_be_deferred shall not allow
-    exceptions to be propagated out of figure braces */
+    exceptions to be propagated out of curly braces */
 #define DEFER\
         auto DEFER_CAT_ID(callOnScopeExit,__LINE__) \
           = (Defer_SupportNamespace::tagClassForLambda) ->* [&]()
@@ -117,7 +121,7 @@ namespace Defer_SupportNamespace{
 
 
 //==============================================================================
-//Demo 
+//Demo (sample test fragment)
 
 #if 0
 
