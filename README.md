@@ -21,6 +21,7 @@ Usage:
     //       some exception, and there is guarantee deferred code is called)
 
 Demo:
+
     #include "deferpp.h"
     #include <iostream>
 
@@ -42,6 +43,7 @@ Demo:
     }
 
 Expected output is:
+
         Enter application, i = 0
         After enter scope, i = 0
         Before exit scope, i = 0
