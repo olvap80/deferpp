@@ -19,3 +19,31 @@ Usage:
     //Note: code after DEFER is called when leaving scope due to any reason
     //      (one can reach scope end, issue return/break/continue or throw
     //       some exception, and there is guarantee deferred code is called)
+
+Demo:
+    #include "deferpp.h"
+    #include <iostream>
+
+    int main() {
+        int i = 0;
+        std::cout << "Enter application, i = " << i << std::endl;
+        {
+            std::cout << "After enter scope, i = " << i << std::endl;
+
+            DEFER {
+                ++i;
+                std::cout << "Lambda called (apply side effect), i = " << i << std::endl;
+            };
+
+            std::cout << "Before exit scope, i = " << i << std::endl;
+        }
+        std::cout << "Exit application, i = " << i << std::endl;
+        return 0;
+    }
+
+Expected output is:
+        Enter application, i = 0
+        After enter scope, i = 0
+        Before exit scope, i = 0
+        Lambda called (apply side effect), i = 1
+        Exit application, i = 1
