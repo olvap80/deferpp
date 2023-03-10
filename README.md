@@ -5,7 +5,7 @@ implemented in standard C++11 but without involving std::function.
 Intended to be quick alternative for RAII: to ensure cleanup code is called
 when scope is exited, so that one does not need to write RAII wrapper
 class for every kind of resource.
-Single header. No installation required, no build needed,
+Single header (deferpp.h). No installation required, no build needed,
 just copy deferpp.h header file to any location you like :)
   
 Usage:
