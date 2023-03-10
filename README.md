@@ -1,10 +1,11 @@
-# Deferpp (Defer++) Go-like DEFER construction for C++ 
-Simple, header only, quick and portable Go-like DEFER construction for C++11 and above,
-implemented in standard C++11 but without involving std::function.
+# Deferpp (Defer++) Go-like DEFER construction for C++ (execute code on scope exit)
+
+Simple, lightweight, header only, quick and portable Go-like DEFER construction for C++11 and above,
+implemented in standard C++11 but without involving std::function (and without any dependencies at all).
 
 Intended to be quick alternative for RAII: to ensure cleanup code is called
 when scope is exited, so that one does not need to write RAII wrapper
-class for every kind of resource.
+class for every kind of resource usage.
 Single header (deferpp.h). No installation required, no build needed,
 just copy deferpp.h header file to any location you like :)
   
