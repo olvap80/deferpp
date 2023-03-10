@@ -1,8 +1,9 @@
 /** @file deferpp.h
-    @brief Deferpp (Defer++) is Go-like DEFER construction for C++11
+    @brief Deferpp (Defer++) is Go-like DEFER construction for C++11,
+           pure C++, no dependencies!
     
     Single header. No installation required, no build needed.
-    Copy this whole file to any location you like :)
+    Copy this this file to any location in wour project you like :)
     Created by Pavlo M, https://github.com/olvap80
     
     Usage:
@@ -55,21 +56,19 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #ifndef DEFERPP_H_ONCE
 #define DEFERPP_H_ONCE
 
-#include <utility>
-
 
 ///Defer following code until enclosing scope is exited
 /** Usage: DEFER{ some_code_to_be_deferred }; 
     Remember that some_code_to_be_deferred shall not allow
     exceptions to be propagated out of curly braces */
 #define DEFER\
-        auto DEFER_CAT_ID(callOnScopeExit,__LINE__) \
+        const auto DEFER_CAT_ID(callOnScopeExit,__LINE__) \
           = (Defer_SupportNamespace::tagClassForLambda) ->* [&]()
 
 
 //==============================================================================
 //Implementation details follow
-          
+
 
 //Helper macro to expand and concatenate macro arguments into combined identifier
 #define DEFER_CAT_ID(a,b) DEFER_CAT_ID_EXPANDED_HELPER(a,b)
@@ -78,37 +77,43 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 namespace Defer_SupportNamespace{
     ///Helper type to trigger operator ->*
-    struct TagClassForLambda{ constexpr TagClassForLambda(){} };
+    struct TagClassForLambda{ constexpr TagClassForLambda() = default; };
     ///Use this "instance" to trigger overloaded operator ->*
+    /** The trick with tagClassForLambda is needed
+        to infere type of the lambda */
     constexpr TagClassForLambda tagClassForLambda;
 
     ///RAII for implementing DEFER behavior
     template<class Lambda>
     class CallOnScopeExit{
     public:
-        constexpr CallOnScopeExit(Lambda&& initialLambda)
-            : lambda(std::move(initialLambda)), isOwner(true)
+        ///Create RAII wrapper around Lambda
+        /** Using Lambda directly, optomizer takes case due to [&]() in front */
+        constexpr CallOnScopeExit(Lambda initialLambda)
+            : lambda(initialLambda), 
+              isOwner(true)
         {}
     
-        constexpr CallOnScopeExit(CallOnScopeExit&& other)
-            : lambda(std::move(other.lambda) ), isOwner(true)
+        ///Usually optimized away due to RVO
+        CallOnScopeExit(CallOnScopeExit&& other)
+            : lambda(other.lambda), isOwner(true)
         {
             other.isOwner = false;
         }
 
-        
+        //ensure copy changes go only through move constructor
         CallOnScopeExit(const CallOnScopeExit& other) = delete;
         CallOnScopeExit& operator=(const CallOnScopeExit& other) = delete;
 
-        
+        ///Actual lambda call once CallOnScopeExit goes out of scope
         ~CallOnScopeExit(){
-            if( isOwner ){
+            if( isOwner ){ //condition is usually optimized away
                 lambda();
             }
         }
 
     private:
-        Lambda lambda; ///< Hold lambda, avoid slow std::function here
+        const Lambda lambda; ///< Hold lambda, avoid slow std::function here
         bool isOwner; ///< Ensure 100% lambda is called only one time
     };
 
@@ -116,8 +121,8 @@ namespace Defer_SupportNamespace{
     /** Use template to avoid slow std::function
         (raw lambda is copied/stored here) */
     template<class Lambda>
-    inline CallOnScopeExit<Lambda> operator ->* (const TagClassForLambda&, Lambda&& lambda){
-        return CallOnScopeExit<Lambda>(std::move(lambda));
+    constexpr CallOnScopeExit<Lambda> operator ->* (const TagClassForLambda&, Lambda lambda){
+        return CallOnScopeExit<Lambda>(lambda);
     }
 }
 
