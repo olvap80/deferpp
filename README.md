@@ -10,7 +10,7 @@ Single header (deferpp.h). No installation required, no build needed,
 just copy deferpp.h header file to any location you like :)
   
 Usage:
-
+```cpp
     {
         auto resource = AcquireSomeResource(parameters_here)
         DEFER{ FreeeThatResource(resource); };
@@ -19,10 +19,10 @@ Usage:
     }
     //Note: code after DEFER is called when leaving scope due to any reason
     //      (one can reach scope end, issue return/break/continue or throw
-    //       some exception, and there is guarantee deferred code is called)
-
+    //       some exception, there is a guarantee such deferred code is called)
+```
 Demo:
-
+```cpp
     #include "deferpp.h"
     #include <iostream>
 
@@ -42,7 +42,7 @@ Demo:
         std::cout << "Exit application, i = " << i << std::endl;
         return 0;
     }
-
+```
 Expected output is:
 
         Enter application, i = 0
