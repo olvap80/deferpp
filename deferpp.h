@@ -3,14 +3,14 @@
            pure C++, no dependencies!
     
     Single header. No installation required, no build needed.
-    Copy this this file to any location in wour project you like :)
+    Copy this file to any location in your project you like :)
     Created by Pavlo M, https://github.com/olvap80
     
     Usage:
 @code
     {
         auto resource = AcquireSomeResource(parameters_here)
-        DEFER{ FreeeThatResource(resource); };
+        DEFER{ FreeThatResource(resource); };
         
         ... //work with resource
     }
@@ -80,7 +80,7 @@ namespace Defer_SupportNamespace{
     struct TagClassForLambda{ constexpr TagClassForLambda() = default; };
     ///Use this "instance" to trigger overloaded operator ->*
     /** The trick with tagClassForLambda is needed
-        to infere type of the lambda */
+        to infer the type of the lambda */
     constexpr TagClassForLambda tagClassForLambda;
 
     ///RAII for implementing DEFER behavior
@@ -88,7 +88,7 @@ namespace Defer_SupportNamespace{
     class CallOnScopeExit{
     public:
         ///Create RAII wrapper around Lambda
-        /** Using Lambda directly, optomizer takes case due to [&]() in front */
+        /** Using Lambda directly, optimizer takes case due to [&]() in front */
         constexpr CallOnScopeExit(Lambda initialLambda)
             : lambda(initialLambda), 
               isOwner(true)
